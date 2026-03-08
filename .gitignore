@@ -1,0 +1,26 @@
+# Virtual Environments
+venvs/
+env/
+.env
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Data & Datasets (Preventing the 100MB error)
+data/
+DATASET/
+*.csv
+*.npy
+
+# ML Models
+*.keras
+*.h5
+*.pkl
+*.joblib
+
+# Jupyter Notebooks
+.ipynb_checkpoints/
+
+raw_tmdb_json/
