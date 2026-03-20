@@ -1,7 +1,7 @@
 # backend/config.py
 
 # -------- DATA PATHS --------
-MOVIES_PATH = r"D:\MINI PROJECT\DATASET\movies_final.csv"
+MOVIES_PATH = r"D:\MINI PROJECT\DATASET\movies_final_merged.csv"
 RATINGS_PATH = r"D:\MINI PROJECT\DATASET\MovieLensDataset20M\rating.csv"
 
 # -------- MODEL PATHS --------
@@ -13,4 +13,4 @@ MOVIE_ENCODER_PATH = r"D:\MINI PROJECT\Checkpoints\movie_encoder.pkl"
 
 # -------- EMBEDDINGS --------
 TEXT_EMB_PATH = r"D:\MINI PROJECT\Checkpoints\movie_embeddings.npy"
-POSTER_EMB_PATH = r"D:\MINI PROJECT\Checkpoints\poster_embeddings.npy"
+POSTER_EMB_PATH = r"D:\MINI PROJECT\DATASET\DataBackup\poster_embeddings.npy"
