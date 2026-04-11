@@ -80,9 +80,7 @@ DistilRoBERTa 7-class    TF/Keras rating CF    BAAI/bge-small-en-v1.5  2048-dim 
 | Happy / Excited | 0.60        | 0.20         | 0.20           |
 | Neutral         | 0.60        | 0.25         | 0.15           |
 
-<!-- ADD MEDIA: Architecture diagram PNG.
-     Save as docs/architecture.png and uncomment:
-     ![Architecture Diagram](docs/architecture.png) -->
+![Architecture Diagram](docs/architecture.png)
 
 ---
 
@@ -210,7 +208,7 @@ Average ILD improvement: +35%. Average NER improvement: +32 percentage points.
 
 
 ![Ultra ILD](docs/graphs/graph2_ultra_ild.png)
-![Negation Enforcement](docs/graphs/graph3_negation_enforcement.png) 
+![Negation Enforcement](docs/graphs/graph3_negation.png) 
 
 ---
 
@@ -229,7 +227,7 @@ Average ILD improvement: +35%. Average NER improvement: +32 percentage points.
 Average ILD improvement: +23% across all emotional contexts.
 
 
-![Chatbot Diversity](docs/graphs/graph4_chatbot_ild.png) 
+![Chatbot Diversity](docs/graphs/graph4_chatbot.png) 
 
 ---
 
@@ -242,7 +240,7 @@ Average ILD improvement: +23% across all emotional contexts.
 
 Adding visual poster features increases score separation between liked and disliked movies by +188%.
 
-![WILT Score Separation](docs/graphs/graph5_wilt_separation.png) 
+![WILT Score Separation](docs/graphs/graph5_wilt.png) 
 
 ---
 
@@ -260,7 +258,7 @@ Adding visual poster features increases score separation between liked and disli
 CineMatch is the only system in this comparison supporting all six capabilities simultaneously.
 
 
-![Comparison Matrix](docs/graphs/graph6_comparison_matrix.png) 
+![Comparison Matrix](docs/graphs/graph6_matrix.png) 
 
 ---
 
