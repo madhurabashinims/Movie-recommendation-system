@@ -18,7 +18,7 @@ from backend.ultra_filter   import ultra_filter_recommend, generate_ultra_explan
 
 st.set_page_config(
     page_title="CineMatch",
-    page_icon="🎬",
+    page_icon="",
     layout="wide",
     initial_sidebar_state="collapsed",
 )
@@ -1028,9 +1028,11 @@ tabs = st.tabs([
 # ──────────────────────────────────────────────────────────────────────────
 # TAB 1 — FOR YOU
 # ──────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────
+# TAB 1 — FOR YOU  (fixed: no ghost skeleton, no "None" text)
+# ──────────────────────────────────────────────────────────────────────────
 with tabs[0]:
 
-    # Hero section
     st.markdown("""
     <div class="cm-hero">
       <div class="cm-hero-eyebrow">Personalised for you</div>
@@ -1061,68 +1063,97 @@ with tabs[0]:
     with col_btn:
         run_recs = st.button("Get Picks", use_container_width=True)
 
+    # ── FIX 1: Use session state to persist results across reruns ──────────
+    if "rec_results"  not in st.session_state: st.session_state.rec_results  = None
+    if "rec_viz"      not in st.session_state: st.session_state.rec_viz      = None
+    if "rec_user_id"  not in st.session_state: st.session_state.rec_user_id  = None
+    if "rec_titles"   not in st.session_state: st.session_state.rec_titles   = []
+    if "rec_expls"    not in st.session_state: st.session_state.rec_expls    = []
+    if "rec_weights"  not in st.session_state: st.session_state.rec_weights  = None
+
     if run_recs:
+        # Run model and store results — no skeleton shown
         alpha, beta, gamma = get_sentiment_weights(chat_msg)
         mood_label = get_weight_explanation(chat_msg, alpha, beta, gamma)
-        st.markdown(
-            f'<div class="wbar"><div class="wbar-dot"></div>'
-            f'{mood_label} &nbsp;·&nbsp; <b>NCF</b> {alpha:.2f} &nbsp;'
-            f'<b>Text</b> {beta:.2f} &nbsp;<b>Visual</b> {gamma:.2f}</div>',
-            unsafe_allow_html=True,
-        )
-        skeleton_grid(5)
-        with st.spinner(""):
+        st.session_state.rec_weights = (alpha, beta, gamma, mood_label)
+
+        with st.spinner("Finding your picks…"):
             recs, viz_data = recommend_movies_multimodal(
                 user_id=user_id, context=context, chat_msg=chat_msg, top_n=10,
             )
-        # rebuild after spinner
-        st.rerun() if recs is None else None
 
-        recent_titles = (
-            context["movies"][
-                context["movies"].movieId.isin(
-                    context["ratings"][context["ratings"].userId == user_id].movieId
-                )
-            ]["title"].tolist()[:3]
-        )
+        if recs is not None and not recs.empty:
+            # Pre-generate all explanations inside the spinner so they're ready
+            recent_titles = (
+                context["movies"][
+                    context["movies"].movieId.isin(
+                        context["ratings"][context["ratings"].userId == user_id].movieId
+                    )
+                ]["title"].tolist()[:3]
+            )
+            expls = []
+            for _, row in recs.iterrows():
+                explanation = generate_llm_explanation({
+                    "recommended_movie": row["title"],
+                    "genres":            row["genres"],
+                    "recent_movies":     recent_titles,
+                })
+                expls.append(str(explanation))
+
+            st.session_state.rec_results  = recs
+            st.session_state.rec_viz      = viz_data
+            st.session_state.rec_user_id  = user_id
+            st.session_state.rec_titles   = recent_titles
+            st.session_state.rec_expls    = expls
+
+    # ── FIX 2: Render results ONLY from session state, never alongside skeleton ──
+    if st.session_state.rec_results is not None:
+        recs      = st.session_state.rec_results
+        viz_data  = st.session_state.rec_viz
+        expls     = st.session_state.rec_expls
+        uid_shown = st.session_state.rec_user_id
+
+        # Weight bar
+        if st.session_state.rec_weights:
+            alpha, beta, gamma, mood_label = st.session_state.rec_weights
+            st.markdown(
+                f'<div class="wbar"><div class="wbar-dot"></div>'
+                f'{mood_label} &nbsp;·&nbsp; <b>NCF</b> {alpha:.2f} &nbsp;'
+                f'<b>Text</b> {beta:.2f} &nbsp;<b>Visual</b> {gamma:.2f}</div>',
+                unsafe_allow_html=True,
+            )
+
         viz_lookup = {}
         if viz_data is not None and not viz_data.empty:
             for _, vr in viz_data.iterrows():
                 viz_lookup[vr["title"]] = vr.to_dict()
 
         st.markdown(
-            f'<div class="result-meta"><b>{len(recs)}</b> personalised picks for User {user_id}</div>',
+            f'<div class="result-meta"><b>{len(recs)}</b> personalised picks for User {uid_shown}</div>',
             unsafe_allow_html=True,
         )
 
-        # Render grid
+        # Render grid — all cards in one HTML block, no per-card rerenders
         cards_html = ""
         for i, (_, row) in enumerate(recs.iterrows()):
-            explanation = generate_llm_explanation({
-                "recommended_movie": row["title"],
-                "genres":            row["genres"],
-                "recent_movies":     recent_titles,
-            })
             score = float(viz_lookup.get(row["title"], {}).get("text", 0.5))
             p     = poster_url(row)
             poster_html = (
                 f'<img src="{p}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;" />' if p
                 else '<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#475569;font-weight:600;letter-spacing:0.05em;">NO POSTER</div>'
             )
-            sc    = score_class(score)
-            chips = genre_chips_dark(row.get("genres",""))
-            title = str(row.get("title",""))
-            delay = f"animation-delay:{i*0.05}s"
-            expl  = str(explanation)
+            sc      = score_class(score)
+            chips   = genre_chips_dark(row.get("genres",""))
+            title   = str(row.get("title",""))
+            delay   = f"animation-delay:{i*0.05}s"
+            expl    = expls[i] if i < len(expls) else ""
 
             sc_colors = {"score-green":"#4ade80","score-teal":"#2dd4bf","score-yellow":"#facc15","score-gray":"#64748b"}
             sc_col = sc_colors.get(sc, "#64748b")
             cards_html += f"""
 <div style="background:#1e293b;border:1px solid rgba(255,255,255,0.08);
   border-radius:14px;overflow:hidden;
-  transition:transform 0.25s,box-shadow 0.25s;
-  {delay.replace("animation-delay","animation-delay")};
-  animation:fadeUp 0.4s ease both;">
+  animation:fadeUp 0.4s ease both;{delay}">
   <div style="position:relative;width:100%;padding-top:150%;background:#131c30;overflow:hidden;">
     {poster_html}
     <span style="position:absolute;top:8px;right:8px;font-size:12px;font-weight:800;
@@ -1131,7 +1162,9 @@ with tabs[0]:
       border:1px solid {sc_col};">{pct(score)} Match</span>
   </div>
   <div style="padding:0.8rem;">
-    <div style="font-weight:700;font-size:15px;color:#f1f5f9;margin-bottom:5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-family:'Plus Jakarta Sans',sans-serif;" title="{title}">{title}</div>
+    <div style="font-weight:700;font-size:15px;color:#f1f5f9;margin-bottom:5px;
+      white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+      font-family:'Plus Jakarta Sans',sans-serif;" title="{title}">{title}</div>
     <div style="display:flex;flex-wrap:wrap;gap:3px;margin-bottom:6px;">{chips}</div>
     <div style="font-size:0.73rem;color:#94a3b8;line-height:1.55;">{expl}</div>
   </div>
@@ -1139,39 +1172,7 @@ with tabs[0]:
 
         st.markdown(f'<div class="movie-grid">{cards_html}</div>', unsafe_allow_html=True)
 
-        # Radar breakdown section
-        if viz_lookup:
-            st.markdown("<div style='margin-top:2.5rem'></div>", unsafe_allow_html=True)
-            st.markdown(
-                '<div class="cm-section-title">Score Breakdown</div>'
-                '<div class="cm-section-sub">NCF × Text × Visual weights per title</div>',
-                unsafe_allow_html=True,
-            )
-            rcols = st.columns(min(5, len(recs)))
-            for i, (_, row) in enumerate(recs.head(5).iterrows()):
-                vr = viz_lookup.get(row["title"])
-                if vr and i < len(rcols):
-                    with rcols[i]:
-                        st.plotly_chart(
-                            make_radar(
-                                float(vr.get("ncf",0)),
-                                float(vr.get("text",0)),
-                                float(vr.get("poster",0)),
-                            ),
-                            use_container_width=True,
-                            config={"displayModeBar": False},
-                        )
-                        st.markdown(
-                            f"<div style='text-align:center;font-size:0.70rem;"
-                            f"color:#94a3b8;font-weight:600;overflow:hidden;"
-                            f"text-overflow:ellipsis;white-space:nowrap;'>"
-                            f"{row['title'][:22]}…</div>",
-                            unsafe_allow_html=True,
-                        )
-
-# ──────────────────────────────────────────────────────────────────────────
-    st.markdown('</div>', unsafe_allow_html=True)  # close tab-content
-
+        
 # TAB 2 — MOVIE ASSISTANT  (custom chat UI — avoids st.chat_message sanitiser)
 # ──────────────────────────────────────────────────────────────────────────
 
@@ -1518,7 +1519,6 @@ with tabs[3]:
     run_ultra = st.button("Find Movies", key="ultra_run", use_container_width=False)
 
     if run_ultra and ultra_query.strip():
-        skeleton_grid(5)
         with st.spinner("Parsing query and searching…"):
             results_df, parsed = ultra_filter_recommend(
                 query                = ultra_query.strip(),

@@ -1,0 +1,153 @@
+{
+  "recommender": [
+    {
+      "label": "NCF only\n(baseline)",
+      "p10": 0.2497,
+      "ndcg": 0.2709
+    },
+    {
+      "label": "NCF + Text\n(no poster)",
+      "p10": 0.2505,
+      "ndcg": 0.273
+    },
+    {
+      "label": "Text-dominant\n(0.5/0.3/0.2)",
+      "p10": 0.2336,
+      "ndcg": 0.253
+    },
+    {
+      "label": "Visual-boost\n(0.65/0.2/0.15)",
+      "p10": 0.2505,
+      "ndcg": 0.273
+    },
+    {
+      "label": "Optimal\n(0.6/0.25/0.15)",
+      "p10": 0.2583,
+      "ndcg": 0.2791
+    }
+  ],
+  "ultra": {
+    "rows": [
+      {
+        "label": "Animation+Animals",
+        "has_excl": false,
+        "base_ild": 0.3746,
+        "full_ild": 0.473,
+        "base_ner": null,
+        "full_ner": null
+      },
+      {
+        "label": "Thriller (not Horror)",
+        "has_excl": true,
+        "base_ild": 0.3728,
+        "full_ild": 0.506,
+        "base_ner": 1.0,
+        "full_ner": 1.0
+      },
+      {
+        "label": "Romance (not Drama)",
+        "has_excl": true,
+        "base_ild": 0.3455,
+        "full_ild": 0.5211,
+        "base_ner": 0.5,
+        "full_ner": 1.0
+      },
+      {
+        "label": "SciFi (no Romance/Comedy)",
+        "has_excl": true,
+        "base_ild": 0.4003,
+        "full_ild": 0.5065,
+        "base_ner": 0.5,
+        "full_ner": 1.0
+      },
+      {
+        "label": "Family Drama (no Action)",
+        "has_excl": true,
+        "base_ild": 0.3654,
+        "full_ild": 0.5137,
+        "base_ner": 1.0,
+        "full_ner": 1.0
+      },
+      {
+        "label": "Kids Adventure",
+        "has_excl": false,
+        "base_ild": 0.3882,
+        "full_ild": 0.508,
+        "base_ner": null,
+        "full_ner": null
+      },
+      {
+        "label": "Psych Thriller (no Comedy)",
+        "has_excl": true,
+        "base_ild": 0.3351,
+        "full_ild": 0.5007,
+        "base_ner": 0.8,
+        "full_ner": 1.0
+      },
+      {
+        "label": "Sports Drama",
+        "has_excl": false,
+        "base_ild": 0.3903,
+        "full_ild": 0.4725,
+        "base_ner": null,
+        "full_ner": null
+      }
+    ],
+    "base_cov": 0.0032,
+    "full_cov": 0.0032
+  },
+  "chatbot": {
+    "rows": [
+      {
+        "label": "Soft Grief",
+        "base_ild": 0.3925,
+        "full_ild": 0.5045
+      },
+      {
+        "label": "Anger",
+        "base_ild": 0.3898,
+        "full_ild": 0.476
+      },
+      {
+        "label": "Happy",
+        "base_ild": 0.3634,
+        "full_ild": 0.4381
+      },
+      {
+        "label": "Deep Grief",
+        "base_ild": 0.3773,
+        "full_ild": 0.449
+      },
+      {
+        "label": "Bored",
+        "base_ild": 0.3701,
+        "full_ild": 0.4961
+      },
+      {
+        "label": "Stressed",
+        "base_ild": 0.3745,
+        "full_ild": 0.4203
+      }
+    ],
+    "base_cov": 0.0024,
+    "full_cov": 0.0025
+  },
+  "wilt": {
+    "labels": [
+      "Text-only\n(baseline)",
+      "Text+Poster\n(proposed)"
+    ],
+    "liked_avg": [
+      0.52,
+      0.61
+    ],
+    "disliked_avg": [
+      0.44,
+      0.38
+    ],
+    "separation": [
+      0.08,
+      0.23
+    ]
+  }
+}
