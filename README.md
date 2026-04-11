@@ -10,9 +10,8 @@ A research-grade hybrid movie recommendation system combining Neural Collaborati
 
 ---
 
-<!-- ADD MEDIA: Hero screenshot of the Streamlit app (For You tab, poster grid visible).
-     Save as docs/screenshots/app_hero.png and uncomment:
-     ![CineMatch UI](docs/screenshots/app_hero.png) -->
+
+![CineMatch UI](docs/screenshots/app_hero.png) 
 
 ---
 
@@ -187,9 +186,7 @@ Evaluated on 1,000 held-out test users, MovieLens-25M.
 
 Optimal configuration achieves +3.4% Precision@10 and +3.0% NDCG@10 over the NCF-only baseline.
 
-<!-- ADD MEDIA: Copy graph1_recommender_ablation.png from D:\MINI PROJECT\ to docs/graphs/
-     then uncomment:
-     ![Ablation Study](docs/graphs/graph1_recommender_ablation.png) -->
+![Ablation Study](docs/graphs/graph1_recommender_ablation.png)
 
 ---
 
@@ -211,10 +208,9 @@ ILD = Intra-List Diversity (higher = more diverse). NER = Negation Enforcement R
 
 Average ILD improvement: +35%. Average NER improvement: +32 percentage points.
 
-<!-- ADD MEDIA: Copy graph2_ultra_ild.png and graph3_negation_enforcement.png
-     from D:\MINI PROJECT\ to docs/graphs/ then uncomment:
-     ![Ultra ILD](docs/graphs/graph2_ultra_ild.png)
-     ![Negation Enforcement](docs/graphs/graph3_negation_enforcement.png) -->
+
+![Ultra ILD](docs/graphs/graph2_ultra_ild.png)
+![Negation Enforcement](docs/graphs/graph3_negation_enforcement.png) 
 
 ---
 
@@ -232,9 +228,8 @@ Average ILD improvement: +35%. Average NER improvement: +32 percentage points.
 
 Average ILD improvement: +23% across all emotional contexts.
 
-<!-- ADD MEDIA: Copy graph4_chatbot_ild.png from D:\MINI PROJECT\ to docs/graphs/
-     then uncomment:
-     ![Chatbot Diversity](docs/graphs/graph4_chatbot_ild.png) -->
+
+![Chatbot Diversity](docs/graphs/graph4_chatbot_ild.png) 
 
 ---
 
@@ -247,9 +242,7 @@ Average ILD improvement: +23% across all emotional contexts.
 
 Adding visual poster features increases score separation between liked and disliked movies by +188%.
 
-<!-- ADD MEDIA: Copy graph5_wilt_separation.png from D:\MINI PROJECT\ to docs/graphs/
-     then uncomment:
-     ![WILT Score Separation](docs/graphs/graph5_wilt_separation.png) -->
+![WILT Score Separation](docs/graphs/graph5_wilt_separation.png) 
 
 ---
 
@@ -266,9 +259,8 @@ Adding visual poster features increases score separation between liked and disli
 
 CineMatch is the only system in this comparison supporting all six capabilities simultaneously.
 
-<!-- ADD MEDIA: Copy graph6_comparison_matrix.png from D:\MINI PROJECT\ to docs/graphs/
-     then uncomment:
-     ![Comparison Matrix](docs/graphs/graph6_comparison_matrix.png) -->
+
+![Comparison Matrix](docs/graphs/graph6_comparison_matrix.png) 
 
 ---
 
@@ -341,9 +333,8 @@ Open `http://localhost:8501`
 
 Select a user ID and optionally describe your current mood in natural language. The system detects emotion, adjusts fusion weights, runs hybrid NCF + SBERT + ResNet scoring, and displays a poster grid with per-film score breakdowns.
 
-<!-- ADD MEDIA: Screenshot of For You tab with results.
-     Save as docs/screenshots/tab_for_you.png and uncomment:
-     ![For You Tab](docs/screenshots/tab_for_you.png) -->
+
+![For You Tab](docs/screenshots/tab_for_you.png) 
 
 ### Movie Assistant Tab
 
@@ -356,9 +347,7 @@ My friend and I had a great time, something fun please
 I am really stressed about my exams
 ```
 
-<!-- ADD MEDIA: Screenshot of Movie Assistant tab showing a response.
-     Save as docs/screenshots/tab_chatbot.png and uncomment:
-     ![Movie Assistant](docs/screenshots/tab_chatbot.png) -->
+![Movie Assistant](docs/screenshots/tab_chatbot.png) 
 
 ### Ultra-Specific Search Tab
 
@@ -370,9 +359,7 @@ animation with animals cheerful adventure for kids
 dark sci-fi mind-bending, no romance, 2010s
 ```
 
-<!-- ADD MEDIA: Screenshot of Ultra-Specific tab showing detected query tags.
-     Save as docs/screenshots/tab_ultra.png and uncomment:
-     ![Ultra-Specific](docs/screenshots/tab_ultra.png) -->
+![Ultra-Specific](docs/screenshots/tab_ultra.png) 
 
 ### Will I Like This? Tab
 
