@@ -365,6 +365,9 @@ dark sci-fi mind-bending, no romance, 2010s
 
 Enter any movie title, genres, and plot summary. Optionally upload a poster image. Returns a compatibility verdict with NCF, narrative, and visual sub-scores.
 
+![Ultra-Specific](docs/screenshots/wilt.png) 
+
+
 ---
 
 ## Related Work
