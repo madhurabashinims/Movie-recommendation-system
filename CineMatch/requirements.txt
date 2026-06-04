@@ -1,0 +1,12 @@
+pandas
+numpy
+scikit-learn
+matplotlib
+seaborn
+requests
+tqdm
+sentence_transformers
+tensorflow
+pillow 
+torch 
+torchvision
